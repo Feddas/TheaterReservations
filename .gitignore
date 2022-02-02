@@ -1,0 +1,34 @@
+# General
+/Library/*
+# pidb files are only for code completion caching data according to:
+# http://stackoverflow.com/questions/1022111/what-are-monodevelops-pidb-files
+*.pidb
+*.userprefs
+/UserSettings/*
+/Logs/*
+
+# Visual Studio & its tools
+*.sln
+*.suo
+*.csproj
+*.unityproj
+/[Oo]bj/*
+*.DotSettings
+*.vs
+*.vsconfig
+
+/Temp/*
+/[Bb]uilds/*
+DontCommit*
+
+# Assetstore type Packages
+/Assets/TextMesh Pro/*
+
+# Files that should be referenced in manifest.json
+/Packages/*/*
+!/Packages/manifest.json
+!/Packages/*/package.json
+
+# LFS files
+/zipStruct/*
+/RawArt/*
