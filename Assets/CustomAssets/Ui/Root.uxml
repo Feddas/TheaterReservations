@@ -1,8 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="ChooseName" src="project://database/Assets/CustomAssets/Ui/ChooseName.uxml?fileID=9197481963319205126&amp;guid=c17c76ab86b56a14183888f397bd5ee5&amp;type=3#ChooseName" />
-    <ui:Template name="ChooseDay" src="project://database/Assets/CustomAssets/Ui/ChooseDay.uxml?fileID=9197481963319205126&amp;guid=0b465e5069710b3438320fe419abea10&amp;type=3#ChooseDay" />
-    <Style src="project://database/Assets/CustomAssets/Ui/AlignSize.uss?fileID=7433441132597879392&amp;guid=c143693c43356d0499c2b15b2b81ca26&amp;type=3#AlignSize" />
-    <ui:Instance template="ChooseName" name="ChooseName" class="alignScreen" />
-    <ui:Instance template="ChooseDay" name="ChooseDay" class="alignScreen" style="display: none;" />
-    <ui:Button text="x" display-tooltip-when-elided="true" name="Exit" class="alignsize" style="align-items: flex-end; position: absolute; right: 0; top: 0;" />
-</ui:UXML>

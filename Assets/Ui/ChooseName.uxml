@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/CustomAssets/Ui/Darkmode.uss?fileID=7433441132597879392&amp;guid=a9f09b7666b1d27438046bab4c682e08&amp;type=3#Darkmode" />
-    <Style src="project://database/Assets/CustomAssets/Ui/AlignSize.uss?fileID=7433441132597879392&amp;guid=c143693c43356d0499c2b15b2b81ca26&amp;type=3#AlignSize" />
+    <Style src="project://database/Assets/Ui/Darkmode.uss?fileID=7433441132597879392&amp;guid=a9f09b7666b1d27438046bab4c682e08&amp;type=3#Darkmode" />
+    <Style src="project://database/Assets/Ui/AlignSize.uss?fileID=7433441132597879392&amp;guid=c143693c43356d0499c2b15b2b81ca26&amp;type=3#AlignSize" />
     <ui:Label text="Make Theater Reservations" display-tooltip-when-elided="true" name="Title" class="darkmodeText alignsizeTitle" />
-    <ui:TextField picking-mode="Ignore" label="Name you&apos;d like seats to be reserved under:" value="name" text="name" name="PartyName" class="darkmodeText alignsize" style="margin-left: 10%; margin-right: 10%;" />
+    <ui:TextField picking-mode="Ignore" label="Name you&apos;d like seats to be reserved under:" value="name" text="name" name="PartyName" class="darkmodeText alignsize" style="margin-left: 10%; margin-right: 10%; flex-direction: column;" />
     <ui:Button text="Continue" display-tooltip-when-elided="true" name="Continue" class="darkmodeText alignsize" style="position: absolute; right: 10%; bottom: 10%;" />
 </ui:UXML>

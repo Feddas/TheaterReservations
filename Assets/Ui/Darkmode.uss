@@ -2,11 +2,11 @@
 }
 
 Label.darkmodeText {
-    color: rgb(229, 229, 229);
+    color: rgb(169, 169, 169);
 }
 
 .darkmodeText Label {
-    color: rgb(229, 229, 229);
+    color: rgb(169, 169, 169);
 }
 
 .darkmodeText TextInput {
