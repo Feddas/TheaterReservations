@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feec4ca59afc8674a8d559fbbb5d64e3, type: 3}
+  m_Name: TheaterCinema2
+  m_EditorClassIdentifier: 
+  TheaterName: Cinema 2
+  ActiveMovies:
+  - {fileID: 11400000, guid: b0add865c847bb34abbcca8d2d4b6cd2, type: 2}
+  - {fileID: 11400000, guid: d07c803d308cf6c459ed5f94339b3114, type: 2}
+  - {fileID: 11400000, guid: 6eda2d1b04e97cd45846d6885086b6c3, type: 2}
