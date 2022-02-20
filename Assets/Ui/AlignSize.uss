@@ -1,9 +1,10 @@
 .alignsize {
+    font-size: 21px;
 }
 
 Label.alignsizeTitle {
     font-size: 42px;
-    height: 40%;
+    height: 20%;
     -unity-text-align: middle-center;
 }
 
@@ -27,15 +28,21 @@ Button.alignsize {
 }
 
 Button.alignsize:hover {
-    scale: 2 2;
+    scale: 1.1 1.1;
+}
+
+TextField.alignsize {
+    flex-direction: column;
+}
+
+DropdownField.alignsize {
+    flex-direction: column;
 }
 
 TextField.alignsize Label {
-    -unity-text-align: upper-right;
-    margin-right: 10px;
+    -unity-text-align: upper-left;
 }
 
 DropdownField.alignsize Label {
-    -unity-text-align: upper-right;
-    margin-right: 10px;
+    -unity-text-align: upper-left;
 }
