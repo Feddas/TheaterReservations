@@ -16,21 +16,37 @@ using UnityEngine.UIElements;
 /// </summary>
 public class UiManager : MonoBehaviour
 {
+    /// <summary> Panel for name selection </summary>
     private VisualElement chooseName;
-    private VisualElement chooseDay;
-    private VisualElement chooseShowing;
-    private VisualElement chooseSeats;
     private TextField nameParty;
     private Button nameContinue;
+
+    /// <summary> Panel for day selection </summary>
+    private VisualElement chooseDay;
+    private DropdownField month;
+    private DropdownField day;
+    private DropdownField year;
+    private Button dayContinue;
+
+    private VisualElement chooseShowing;
+    private VisualElement chooseSeats;
 
     private void OnEnable()
     {
         var root = GetComponent<UIDocument>().rootVisualElement;
 
-        initChoseName(root);
+        initExit(root);
+        initChooseName(root);
+        initChooseDay(root);
     }
 
-    private void initChoseName(VisualElement root)
+    private void initExit(VisualElement root)
+    {
+        root.Q<Button>("Exit")
+            .RegisterCallback<ClickEvent>(ev => Application.Quit());
+    }
+
+    private void initChooseName(VisualElement root)
     {
         chooseName = root.Q<VisualElement>("ChooseName");
         nameParty = chooseName.Q<TextField>("PartyName");
@@ -39,10 +55,23 @@ public class UiManager : MonoBehaviour
         nameContinue.RegisterCallback<ClickEvent>(ev => saveName());
     }
 
+    private void initChooseDay(VisualElement root)
+    {
+        chooseDay = root.Q<VisualElement>("ChooseDay");
+        month = chooseDay.Q<DropdownField>("Month");
+        day = chooseDay.Q<DropdownField>("Day");
+        year = chooseDay.Q<DropdownField>("Year");
+
+        nameContinue.RegisterCallback<ClickEvent>(ev => saveName());
+    }
+
     private void saveName()
     {
         Debug.Log("Name was " + this.nameParty.text);
         string name = this.nameParty.text;
+
+        chooseName.style.display = DisplayStyle.None;
+        chooseDay.style.display = DisplayStyle.Flex;
     }
 
     //public UiManager()

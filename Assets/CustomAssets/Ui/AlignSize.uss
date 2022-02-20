@@ -7,6 +7,12 @@ Label.alignsizeTitle {
     -unity-text-align: middle-center;
 }
 
+.alignScreen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
 .alignsize Label {
     font-size: 21px;
 }
@@ -17,6 +23,11 @@ Label.alignsizeTitle {
 
 Button.alignsize {
     font-size: 21px;
+    transition-duration: 0.5s;
+}
+
+Button.alignsize:hover {
+    scale: 2 2;
 }
 
 TextField.alignsize Label {
@@ -27,9 +38,4 @@ TextField.alignsize Label {
 DropdownField.alignsize Label {
     -unity-text-align: upper-right;
     margin-right: 10px;
-}
-
-.alignScreen {
-    width: 100%;
-    height: 100%;
 }
