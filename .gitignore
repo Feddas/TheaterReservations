@@ -23,6 +23,7 @@ DontCommit*
 
 # Assetstore type Packages
 /Assets/TextMesh Pro/*
+/UIElementsSchema/*
 
 # Files that should be referenced in manifest.json
 /Packages/*/*
