@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/TheaterReservation.unity
+    guid: c7a2136cf92eab74389e0507b0ac6582
   m_configObjects: {}
