@@ -4,7 +4,8 @@ using UnityEngine;
 using System.Linq;
 
 /// <summary>
-/// A movie with multiple dates that it will be shown in a theater
+/// A movie with multiple dates that it will be shown in a theater.
+/// Used to structure a scriptable object that makes it easy to create and track what show times are available for each movie.
 /// </summary>
 [System.Serializable]
 [CreateAssetMenu(fileName = "SingleTheaterShowing", menuName = "TheaterReservations/SingleTheaterShowing")]
@@ -19,7 +20,7 @@ public class TheaterMovie : ScriptableObject
     [Tooltip("Times the movie will be shown")]
     public List<UDateTime> ShownAtTimes = new List<UDateTime>(new UDateTime[] { System.DateTime.Now }); // initalize with at least one showing
 
-    /// <summary> Generates ID used to cross-reference with reservations </summary>
+    /// <summary> Builds ID used to cross-reference with reservations </summary>
     public int GetHashFor(System.DateTime atDate)
     {
         if (false == ShownAtTimes.Any(s => s.dateTime == atDate))
@@ -27,6 +28,6 @@ public class TheaterMovie : ScriptableObject
             throw new System.Exception(this.name + " does not contain a showing at " + atDate.ToString());
         }
 
-        return MovieName.GetHashCode() ^ atDate.GetHashCode();
+        return TheaterShowing.GetHashCode(MovieName, atDate); ;
     }
 }

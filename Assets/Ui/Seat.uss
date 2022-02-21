@@ -1,0 +1,6 @@
+.theaterSeat {
+    background-image: url('project://database/Assets/Art/TopDownSeat.png?fileID=2800000&guid=6916bcc0525ac354d89007f94397e4ab&type=3#TopDownSeat');
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0);
+}

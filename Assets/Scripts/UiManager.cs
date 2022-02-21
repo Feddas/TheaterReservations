@@ -5,8 +5,11 @@ using UnityEngine.UIElements;
 using System.Linq;
 
 /// <summary>
-/// UI Toolkit reference
+/// Manages how UI Toolkit interfaces with the rest of the project.
+/// 
+/// This is my first project using UI Toolkit. I often came back to the following references:
 /// websites:
+///  https://unity.com/features/ui-toolkit
 ///  https://docs.unity3d.com/Packages/com.unity.ui@1.0/manual/index.html
 ///  https://docs.unity3d.com/Packages/com.unity.ui@1.0/api/UnityEngine.UIElements.html
 ///  https://docs.unity3d.com/2020.1/Documentation/Manual/UITK-package.html
@@ -15,15 +18,19 @@ using System.Linq;
 ///  https://forum.unity.com/forums/ui-toolkit.178
 ///  https://www.raywenderlich.com/6452218-uielements-tutorial-for-unity-getting-started
 /// videos:
-///  3 years old (2018.3): https://youtu.be/sVEmJ5-dr5E
-///  2 years old (Unite Copenhagen): https://youtu.be/t4tfgI1XvGs
-///  1.5 years old (DapperDino): https://youtu.be/6zR3uvLVzc4
-///  3 months old (KookaNova): https://youtu.be/EVdtUPnl3Do
+///  Jan2019 (2018.3): https://youtu.be/sVEmJ5-dr5E
+///  Oct2019 (Unite Copenhagen): https://youtu.be/t4tfgI1XvGs
+///  Oct2020 (DapperDino): https://youtu.be/6zR3uvLVzc4
+///  Nov2021 (KookaNova): https://youtu.be/EVdtUPnl3Do
 /// </summary>
 public class UiManager : MonoBehaviour
 {
     public TheaterAllShowings AllMovieShowings;
     public VisualTreeAsset MovieItem;
+
+    // values stored before sending a reservation to the backend
+    private string selectedName = "unset name";
+    private TheaterShowing selectedShowing = new TheaterShowing("unset movie name", Color.cyan, System.DateTime.Now);
 
     /// <summary> Panel for name selection </summary>
     private VisualElement chooseName;
@@ -41,6 +48,7 @@ public class UiManager : MonoBehaviour
 
     /// <summary> Panel for seat selection </summary>
     private VisualElement chooseSeats;
+    private IEnumerable<VisualElement> allSeats;
 
     private void OnEnable()
     {
@@ -73,8 +81,7 @@ public class UiManager : MonoBehaviour
 
     private void nameChosen()
     {
-        //Debug.Log("Name was " + this.nameParty.text);
-        string name = this.nameParty.text;
+        selectedName = this.nameParty.text;
 
         gotoScreen(chooseDay);
     }
@@ -99,6 +106,12 @@ public class UiManager : MonoBehaviour
         day.RegisterValueChangedCallback(ev => saveDay());
     }
 
+    private bool containsDay(TheaterMovie movie, string dayInDformat)
+    {
+        var result = movie.ShownAtTimes.Any(d => d.dateTime.ToString("D") == dayInDformat);
+        return result;
+    }
+
     private void saveDay()
     {
         Debug.Log("Selected " + day.value);
@@ -113,12 +126,6 @@ public class UiManager : MonoBehaviour
         movieList.Rebuild();
 
         gotoScreen(chooseShowing);
-    }
-
-    private bool containsDay(TheaterMovie movie, string dayInDformat)
-    {
-        var result = movie.ShownAtTimes.Any(d => d.dateTime.ToString("D") == dayInDformat);
-        return result;
     }
     #endregion [ Day ]
 
@@ -147,8 +154,13 @@ public class UiManager : MonoBehaviour
 
     private void timeSelected(IEnumerable<object> selection)
     {
-        TheaterShowing showing = selection.First() as TheaterShowing;
-        Debug.Log(showing.MovieName + " selected " + showing.ShownAtTime.ToString("t"));
+        if (selection == null || selection.Count() == 0) return; // forms were reset
+
+        selectedShowing = selection.First() as TheaterShowing;
+        Debug.Log(selectedShowing.MovieName + " selected " + selectedShowing.ShownAtTime.ToString("t"));
+
+        updateSeats();
+        gotoScreen(chooseSeats);
     }
     #endregion [ Showing ]
 
@@ -156,6 +168,65 @@ public class UiManager : MonoBehaviour
     private void initChooseSeats(VisualElement root)
     {
         chooseSeats = root.Q<VisualElement>("ChooseSeats");
+
+        // Register all seats
+        allSeats = chooseSeats.Q<VisualElement>("AllSeats").Children();
+        foreach (var seat in allSeats)
+        {
+            seat.RegisterCallback<ClickEvent>(ev => seatToggled(ev, seat));
+        }
+
+        // Finished with seats
+        var seatsContinue = chooseSeats.Q<Button>("Continue");
+        seatsContinue.RegisterCallback<ClickEvent>(ev => seatsChosen(allSeats));
+    }
+
+    private void updateSeats()
+    {
+        int[] previousReservation = System.Array.ConvertAll("10n11n12".Split('n'), s => int.Parse(s));
+        int[] takenSeats = System.Array.ConvertAll("0n3n4".Split('n'), s => int.Parse(s));
+        var seats = allSeats.ToArray();
+        for (int i = 0; i < seats.Count(); i++)
+        {
+            seats[i].style.unityBackgroundImageTintColor = previousReservation.Contains(i) ? Color.green
+                                                         : takenSeats.Contains(i) ? Color.red
+                                                         : Color.white;
+        }
+    }
+
+    private void seatToggled(ClickEvent ev, VisualElement seat)
+    {
+        var currentColor = seat.style.unityBackgroundImageTintColor;
+
+        if (currentColor == Color.red)
+        {
+            return;
+        }
+        else if (currentColor == Color.green)
+        {
+            seat.style.unityBackgroundImageTintColor = Color.white;
+        }
+        else if (currentColor == Color.white)
+        {
+            seat.style.unityBackgroundImageTintColor = Color.green;
+        }
+    }
+
+    private void seatsChosen(IEnumerable<VisualElement> seats)
+    {
+        var myReservation = seats.Select((Element, Index) => new { Element, Index })
+            .Where(seat => seat.Element.style.unityBackgroundImageTintColor == Color.green)
+            .Select(seat => seat.Index);
+
+        Debug.Log(selectedName + " seats are " + string.Join('n', myReservation) + " for movie ID " + selectedShowing.GetHashCode());
+
+        // return back to first screen
+        //nameParty.value = selectedName = "";
+        //day.index = -1;
+        //movieList.selectedIndex = -1;
+        //selectedShowing = null;
+        //gotoScreen(chooseName);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     }
     #endregion [ Seats ]
 
