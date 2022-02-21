@@ -30,6 +30,12 @@ DontCommit*
 !/Packages/manifest.json
 !/Packages/*/package.json
 
+# Google Sheets API keys
+/Assets/Google Sheets to Unity/Resources/GSTU_Config.asset
+
 # LFS files
 /zipStruct/*
 /RawArt/*
+/Assets/Google Sheets to Unity/Animal Example*
+/Assets/Google Sheets to Unity/*.pdf
+/Assets/Google Sheets to Unity/*.pdf.meta

@@ -1,0 +1,18 @@
+{
+    "name": "GoogleSheetsToUnityEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:11c0eaf344f664f4ea33da354985eea7"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
