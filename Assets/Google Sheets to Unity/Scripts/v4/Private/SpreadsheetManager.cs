@@ -22,7 +22,7 @@ namespace GoogleSheetsToUnity
         /// Chekcs for a valid token and if its out of date attempt to refresh it
         /// </summary>
         /// <returns></returns>
-        static IEnumerator CheckForRefreshToken()
+        public static IEnumerator CheckForRefreshToken()
         {
             if (Application.isPlaying)
             {

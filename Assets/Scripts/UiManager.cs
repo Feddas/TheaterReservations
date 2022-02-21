@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Linq;
+using Sheets = TheaterReservationsGoogleSheets;
 
 /// <summary>
 /// Manages how UI Toolkit interfaces with the rest of the project.
@@ -114,7 +115,7 @@ public class UiManager : MonoBehaviour
 
     private void saveDay()
     {
-        Debug.Log("Selected " + day.value);
+        // Debug.Log("Selected " + day.value);
         filteredShowings = AllMovieShowings.ActiveMovies
             .Where(m => containsDay(m, day.value))
             .SelectMany(movie => movie.ShownAtTimes.Select(d => d.dateTime)
@@ -156,10 +157,11 @@ public class UiManager : MonoBehaviour
     {
         if (selection == null || selection.Count() == 0) return; // forms were reset
 
+        // save the theater showing time that was selected by the user
         selectedShowing = selection.First() as TheaterShowing;
-        Debug.Log(selectedShowing.MovieName + " selected " + selectedShowing.ShownAtTime.ToString("t"));
-
         updateSeats();
+        // Debug.Log(selectedShowing.MovieName + " selected " + selectedShowing.ShownAtTime.ToString("t"));
+
         gotoScreen(chooseSeats);
     }
     #endregion [ Showing ]
@@ -181,10 +183,14 @@ public class UiManager : MonoBehaviour
         seatsContinue.RegisterCallback<ClickEvent>(ev => seatsChosen(allSeats));
     }
 
+    /// <summary>
+    /// Update the color tint of all seats for the selected theaterId
+    /// </summary>
     private void updateSeats()
     {
-        int[] previousReservation = System.Array.ConvertAll("10n11n12".Split('n'), s => int.Parse(s));
-        int[] takenSeats = System.Array.ConvertAll("0n3n4".Split('n'), s => int.Parse(s));
+        int theaterId = selectedShowing.GetHashCode();
+        int[] previousReservation = Sheets.Instance.GetMySeats(theaterId, selectedName);
+        int[] takenSeats = Sheets.Instance.GetOthersSeats(theaterId, selectedName);
         var seats = allSeats.ToArray();
         for (int i = 0; i < seats.Count(); i++)
         {
@@ -216,9 +222,9 @@ public class UiManager : MonoBehaviour
     {
         var myReservation = seats.Select((Element, Index) => new { Element, Index })
             .Where(seat => seat.Element.style.unityBackgroundImageTintColor == Color.green)
-            .Select(seat => seat.Index);
+            .Select(seat => seat.Index).ToArray();
 
-        Debug.Log(selectedName + " seats are " + string.Join('n', myReservation) + " for movie ID " + selectedShowing.GetHashCode());
+        Sheets.Instance.SetSeats(selectedShowing.GetHashCode(), selectedName, myReservation);
 
         // return back to first screen
         //nameParty.value = selectedName = "";
