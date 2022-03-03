@@ -40,6 +40,30 @@ Make reservations for theater seats.
 2. If internet is currently unavailable, there is no fallback to temporarily save locally or queue reservations for when internet is restored.
 3. Theater showings match to reservations by using a hash that could be the same for two different showings. However, making a hash makes it easy to recreate a showing that was moved or deleted. An auto-incrementing ID and a GUID both suffer from not being able to be regenerated if the same movie and time is put in.
 
+# Architecture
+
+Movies are syncronized using a hash that is built using the movie name and showing datetime. Reservations are a list of seats identified to a party name combined with the movie hash.
+
+Movie showtimes are stored in scriptable objects. There is a scriptable object for a the single theater that stores all movies and times available. This is what is used to build the UI for the user to choose which movie they would like to see.
+
+The movie showing the user has chosen determines which seat reservations are available on the next screen. The user can click as many open or self-reserved seats as they like to toggle them. When they click finish, the reservations under their name are updated on Google Sheets.
+
+[![](https://mermaid.ink/img/pako:eNqFkcFuwjAMhl_FyqlI5bAde5g0YFA2gSaV3XqJqEsiNUmXOFQI8e5Lm3agXZZTHH-__9i-sqOpkGXsZHkr4LAqNYTzmnxJ2HHNT2hnMJ-_wCLZ6tZTBp_c0gX2XOFsZIf8-jHIY7CImUlZSH1qEJQ5SwQnTEfyt8h6QDfJxpieKQQiOfj2aCVWUBsLR28tagKHnNyo2kS3yWCP3ZAGiw7tmZM0ekLzAd3-MXB9xV3_oZw7kcbm-t5SKB583pOBgSfoJAlQviHZNvcmXJzRMhlbPIggDpOL6o9R_fyPOtLL-zhZyhRaxWUVFnTtX0pGAhWWLAvXCmseapWs1LeA-rYKpm-VJGNZVvPGYcq4J1Nc9JFlZD1O0ErysG81UrcfvAejAg)](https://mermaid-js.github.io/mermaid-live-editor/edit/#pako:eNqFkcFuwjAMhl_FyqlI5bAde5g0YFA2gSaV3XqJqEsiNUmXOFQI8e5Lm3agXZZTHH-__9i-sqOpkGXsZHkr4LAqNYTzmnxJ2HHNT2hnMJ-_wCLZ6tZTBp_c0gX2XOFsZIf8-jHIY7CImUlZSH1qEJQ5SwQnTEfyt8h6QDfJxpieKQQiOfj2aCVWUBsLR28tagKHnNyo2kS3yWCP3ZAGiw7tmZM0ekLzAd3-MXB9xV3_oZw7kcbm-t5SKB583pOBgSfoJAlQviHZNvcmXJzRMhlbPIggDpOL6o9R_fyPOtLL-zhZyhRaxWUVFnTtX0pGAhWWLAvXCmseapWs1LeA-rYKpm-VJGNZVvPGYcq4J1Nc9JFlZD1O0ErysG81UrcfvAejAg)
+
+```mermaid
+graph TD;
+    A(Ui Manager) --> B(Input: Party Name);
+    A --> F;
+    A --> H;
+    B --> F(Input: Single movie showtime);
+    F --> G(Google Sheets queried for current seats);
+    G --> H(Input: New seat reservations);
+    H --> I(Google Sheets sent MovieHash, PartyName, Seats);
+    J(Movie 1 with multiple showtimes) --> C(Single Theater);
+    K(Movie 2 with multiple showtimes) --> C;
+    C --> F;
+```
+
 # Decisions
 
 ### UIToolkit
