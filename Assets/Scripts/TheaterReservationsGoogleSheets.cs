@@ -33,7 +33,7 @@ public class TheaterReservationsGoogleSheets : MonoBehaviour
     public static TheaterReservationsGoogleSheets Instance { get; set; }
 
     [Tooltip("Reservations syncing with a Google sheet")]
-    public List<Reservation> Reservations;
+    public List<Reservation> Reservations = new List<Reservation>();
 
     private GoogleSheetsToUnity.GSTU_Search sheetAddress
     {
@@ -150,7 +150,14 @@ public class TheaterReservationsGoogleSheets : MonoBehaviour
     {
         foreach (var row in sheetData.values)
         {
-            loadRow(row);
+            if (row.Count != 3)
+            {
+                Debug.LogWarning("GoogleSheets row skipped due to being malformed. " + string.Join(',', row));
+            }
+            else
+            {
+                loadRow(row);
+            }
         }
     }
 

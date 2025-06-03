@@ -132,7 +132,7 @@ namespace GoogleSheetsToUnity
                 _authToken = authToken;
                 _shouldNotifyAuthTokenReceived = true;
 
-                    EditorCoroutineRunner.StartCoroutine(CheckForTokenRecieve());
+                EditorCoroutineRunner.StartCoroutine(CheckForTokenRecieve());
             }
         }
 
@@ -189,9 +189,17 @@ namespace GoogleSheetsToUnity
                 f.AddField("grant_type", "refresh_token");
                 f.AddField("scope", "");
 
-                using (UnityWebRequest request = UnityWebRequest.Post("https://www.googleapis.com/oauth2/v4/token", f))
+                // Verify URL is up to date using https://accounts.google.com/.well-known/openid-configuration / https://stackoverflow.com/questions/34076267/what-is-the-link-for-google-oauth-tokens
+                string tokenEndpoint = "https://www.googleapis.com/oauth2/v4/token"; // alt: "https://oauth2.googleapis.com/token";
+                using (UnityWebRequest request = UnityWebRequest.Post(tokenEndpoint, f))
                 {
                     yield return request.SendWebRequest();
+
+                    if (false == string.IsNullOrWhiteSpace(request.error))
+                    {
+                        // NOTE: "HTTP/1.1 400 Bad Request" means the Google API test acct needs to be refreshed. See readme.md on how to refresh it.
+                        Debug.LogError("OAuth ERROR: " + request.error);
+                    }
 
                     GoogleDataResponse newGdr = JsonUtility.FromJson<GoogleDataResponse>(request.downloadHandler.text);
                     SpreadsheetManager.Config.gdr.access_token = newGdr.access_token;

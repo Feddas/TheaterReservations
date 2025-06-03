@@ -2,10 +2,25 @@
 
 Make reservations for theater seats.
 
+# Description
+
+This was created for a coding assessment I completed over a weekend in 2022 (Feb 19th through 21st).
+
+- Movie reservations use guest name as their unique key
+- lists available movies and times
+- view of seats that are available and already reserved
+- Multi-platform: web & PC
+- Backend of your choice (I chose Google sheets due to it being a $0 cloud solution)
+- Tests (I did unit tests and an GoogleSheets integration test)
+
 # Try it
 
 - WebGL: https://feddas.github.io/TheaterReservations
-- Desktop: https://github.com/Feddas/TheaterReservations/releases/download/1.0/TheaterReservationsBuiltForPC1.0.zip
+- Desktop: https://github.com/Feddas/TheaterReservations/releases/download/1.0/TheaterReservationsPc20250602.zip
+
+# My results
+
+Recruiter estimated this would take 6 hours. It took me ~20 hours. I did not get a chance to review the code with the potential employeer. I didn't get the job, but was happy the potential employer had no issues with with publically showing the completed assessment on github.
 
 # Steps
 
@@ -33,7 +48,20 @@ Make reservations for theater seats.
 2. The UX isn't as good as it should be.
     1. Should be able to press enter after entering your name instead of having to click "continue"
     2. The data options look too sparse.
-    
+
+### "$0 cloud" Maintence
+
+Google sheets was maintence free at the time of chosing. As of June 2025, OAuth for google sheets expires after 6 months of inactivity. Activity is refreashed by successfully creating a theater reservation. Verify "Last used date" is updated on developers gCloud panel: https://console.cloud.google.com/auth/clients?project=theater-reservations
+
+If the website is not showing reserved seats, a step of interfacing with the cloud has become obsolete.
+1. The Google API test account goes stale. Refresh it by:
+    1. Opening the project in Unity Editor.
+    2. Open Window/GSTU/Open Config.
+    3. Press "Build Connection".
+    4. In the newly opened browser, log-in using the account that hosts the google sheet.
+    5. Continue through the dialogs in browser until shown "Google Sheets and Unity are now linked, you may close this window".
+2. Validate GoogleAuthrisationHelper.cs's CheckForRefreshOfToken() does not have a request.error.
+
 # Concerns
 
 1. Someone can remove someone elses reservations by choosing the same reservation name.
